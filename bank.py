@@ -6,31 +6,39 @@ users = []
 admin_users = []
 def create_acc():
     user_id = 1
+    i=0
     global users
-    username = input("Create a user Name: ")
-    if not username:
-        print("User name can't be empty!!")
-        # continue
-    password = input("Create a password: ")
-    if not password:
-        print("Password can't be empty!!")
-        
-    elif len(password)<6:
-        print("Password must be more than six charactors!!")
-        # continue
+    for i in range(3):
+        username = input("Create a user Name: ")
+        if not username:
+            print("User name can't be empty!!")
+            
+        # else:
+            #continue
+        password = input("Create a password: ")
+        if not password:
+            print("Password can't be empty!!")
+            # continue
+        elif len(password)<6:
+            print("Password must be more than six charactors!!")
+            # continue
+        else:
+            users.append([user_id, username, password])
+
+            with open("users.txt", 'a') as file:
+                for user in users:
+                # file.write(f"{user[0]},{user[1]},{user[2]}\n")
+                    last_user_id = user[0]
+                    user_id = int(last_user_id) + 1
+
+                
+                
+                file.write(f"{user_id},{username},{password}\n")
+            break
+        i += 1
     # users =[username, password]
     
-    users.append([user_id, username, password])
-
-    with open("users.txt", 'a') as file:
-        for user in users:
-            # file.write(f"{user[0]},{user[1]},{user[2]}\n")
-            last_user_id = user[0]
-            user_id = int(last_user_id) + 1
-
-            
-            
-            file.write(f"{user_id},{username},{password}\n")
+    
 
     
     # file = open("users.txt", 'a')
@@ -39,7 +47,7 @@ def create_acc():
     
     
 
-# create_acc()
+create_acc()
 
 def user_details():
     acc_num = input("Enter your account number: ")
@@ -51,7 +59,6 @@ def user_details():
 
 def login_user():
     global admin_users, users
-    
     with open("admin_users.txt", 'a') as file:
         file.write("admin,admin123\n")
     choice = input("Enter Prefered Number to Enter \n 1. Admin\n 2. Normal User\n")
@@ -72,13 +79,15 @@ def login_user():
         #         print("Enter valid credentials!!")
 
         for admin in admins:
+
+            main_menu = main_menu()
             admin = admin.strip() 
             if admin:  # Skip empty lines
                 try:
                     user_name, pass_word = admin.split(",")
                     if user_name == admin_username and pass_word == admin_password:
-                        print("You are successfully logged in as Admin!")
-                        main_menu()
+                        print("You are successfully logged in as Admin!\n",main_menu)
+                        
                         break
                 except ValueError:
                     print(f"Skipping invalid line in users file: {admin}")
@@ -102,7 +111,7 @@ def login_user():
         #         print("Enter correct crdentials!")
 
         for user in user_credentials:
-            user = user.strip() 
+            user = user.strip()
             if user:  # Skip empty lines
                 try:
                     user_id, user_name, pass_word = user.split(",")
@@ -115,7 +124,7 @@ def login_user():
                     continue
         print("Enter correct credentials!")
 
-login_user()
+# login_user()
         
         
 def Account_Create():
