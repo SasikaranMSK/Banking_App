@@ -24,10 +24,10 @@ def record_deposittransaction(user_id, account_number, amount):
     with open('transactions.txt', 'a') as f:
         f.write(f"{user_id}{account_number},deposited:{amount},{datetime.datetime.now()}\n")
 
-# def transcation_history():
-#     file = open("transcation.txt", 'r')
-#     file.read()
-#     file.close()
+def transcation_history():
+    file = open("transcation.txt", 'r')
+    file.read()
+    file.close()
 
 def create_acc():
 
@@ -46,7 +46,7 @@ def create_acc():
                 user_id = 1  # If the file is empty, start with user_id 1
     except FileNotFoundError:
         user_id = 1
-
+    i =0
     for i in range(3):
         username = input("Create a user Name: ")
         
@@ -74,7 +74,7 @@ def create_acc():
             print(f"Account created successfully for {username}")
             user_id += 1
             break  # Exit the loop after successful account creation
-
+    i += 1
         
 
 
