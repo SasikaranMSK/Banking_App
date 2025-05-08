@@ -17,6 +17,18 @@ def get_last_user_id():
         pass
     return 0
 
+def record_withdrawtransaction(user_id, account_number, amount):
+    with open('transactions.txt', 'a') as f:
+        f.write(f"{user_id}{account_number},withdrawed:{amount},{datetime.datetime.now()}\n")
+def record_deposittransaction(user_id, account_number, amount):
+    with open('transactions.txt', 'a') as f:
+        f.write(f"{user_id}{account_number},deposited:{amount},{datetime.datetime.now()}\n")
+
+# def transcation_history():
+#     file = open("transcation.txt", 'r')
+#     file.read()
+#     file.close()
+
 def create_acc():
     user_id = 1
     i = 0
@@ -69,7 +81,7 @@ def user_details():
 
 def Account_Create():
     i = 1
-    accout_holder_name = input("Enter Your Full Name: ")
+    account_holder_name = input("Enter Your Full Name: ")
     Account_Number = i
     Initial_Balance = 0
 
@@ -80,10 +92,12 @@ def Account_Create():
             print(f"You are Sucessfully depostited {amount}")
             print("Welcome to ABC Bank!! You have sucessfully Created Account.\n Your Account Details as Follows.")
             print(
-                f" 1. Account Name: {accout_holder_name}\n 2. Accont Number: {Account_Number}\n 3. Current Balance: {Balance}")
+                f" 1. Account Name: {account_holder_name}\n 2. Accont Number: {Account_Number}\n 3. Current Balance: {Balance}")
 
             with open('accounts.txt', 'a') as f:
-                f.write(f"{account_number},{account_holder_name},{balance}\n")
+                
+                f.write(f"{Account_Number},{current_user},{account_holder_name},{Balance}\n")
+
                 break
 
 
@@ -110,6 +124,7 @@ def deposit_money():
             print("Your Current Balance is: ", Balance)
             deposit_time = time
             print(deposit_time)
+            record_deposittransaction()
             break
 
         elif amount == 0:
@@ -128,12 +143,17 @@ def witdraw_money():
 
     for i in range(3):
         amount = int(input("Enter the Withdrawal amount: "))
-        if amount > 0:
+        file = open('accounts.txt', 'r')
+        acc = file.readlines()
+        
+
+        if acc[0] == current_user and amount > 0:
             Balance = Balance + amount
             print(f"You are Sucessfully Withdrawed {amount}")
             print("Your Current Balance is: ", Balance)
             withdrawal_time = time
             print(withdrawal_time)
+            record_withdrawtransaction()
             break
 
         elif amount == 0:
@@ -149,24 +169,20 @@ def witdraw_money():
 
 def check_balance():
     acc_num = input("Enter your Account Number: ")
-    print("Your Account Balance is: ", )
+    file = open ('accounts.txt', 'r')
+    check_acc = file.readlines()
+    for check in check_acc:
+        user_id, full_name, balance = check.split(",")
+        print("Your Account Balance is: ", balance)
 
 
-def record_transaction(account_number, transaction_type, amount):
-    with open('transactions.txt', 'a') as f:
-        f.write(f"{account_number},{transaction_type},{amount},{datetime.datetime.now()}\n")
 
-
-def transcation_history():
-    file = open("transcation.txt", 'r')
-    file.read()
-    file.close()
 
 
 def main_menu():
     while True:
         choice = input(
-            " 1. Create Account\n 2. Check Balance\n 3. Deposit Money \n 4. Withdraw Money\n 5. Transaction History\n 6. Start Menu\n 6. Exit\n")
+            " 1. Create Account\n 2. Check Balance\n 3. Deposit Money \n 4. Withdraw Money\n 5. Transaction History\n 6. Start Menu\n 7. Exit\n")
         if choice == "1":
             Account_Create()
         if choice == "2":
@@ -247,16 +263,21 @@ def login_user():
                         print("You are successfully logged in!")
                         main_menu()
                         break
+                    elif user_name != username or pass_word != password:
+                        print("Enter correct credentials!")
                 except ValueError:
                     print(f"Skipping invalid line in users file: {user}")
                     continue
-            print("Enter correct credentials!")
+            
+                # print("Enter correct credentials!")
     elif choice == "3":
         start_menu()
+        current_user = user_id
+        return current_user
 
 def start_menu():
     while True:
-        choice = input("Welcome to AB Bank!!\n Choose prefered Number to Enter: \n 1.Login\n 2.Create Account\n")
+        choice = input("Welcome to AB Bank!!\n  Choose prefered Number to Enter: \n    1.Login\n    2.Create Account\n")
         if choice == "1":
             login_user()
             break
