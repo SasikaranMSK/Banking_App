@@ -57,76 +57,7 @@ def user_details():
     customer_file.write[f"{acc_num},{address},{phone_nu}\n"]
 # user_details()
 
-def login_user():
-    global admin_users, users
-    with open("admin_users.txt", 'a') as file:
-        file.write("admin,admin123\n")
-    choice = input("Enter Prefered Number to Enter \n 1. Admin\n 2. Normal User\n")
-    if choice == "1":
-        file = open('admin_users.txt', 'r')
-        admins = file.readlines()
 
-        admin_username =input("Enter Admin User Name: ")
-        admin_password = input("Enter Admin Password: ")
-
-        # for admin in admins:
-        #     admin_username =input("Enter Admin User Name: ")
-        #     admin_password = input("Enter Admin Password: ")
-        #     default_username, default_Password = admin.strip().split(",")
-        #     if default_username == admin_username and default_Password == admin_password:
-        #         print("You are sucessfully Logined!")
-        #     else:
-        #         print("Enter valid credentials!!")
-
-        for admin in admins:
-
-            main_menu = main_menu()
-            admin = admin.strip() 
-            if admin:  # Skip empty lines
-                try:
-                    user_name, pass_word = admin.split(",")
-                    if user_name == admin_username and pass_word == admin_password:
-                        print("You are successfully logged in as Admin!\n",main_menu)
-                        
-                        break
-                except ValueError:
-                    print(f"Skipping invalid line in users file: {admin}")
-                    continue
-        print("Enter correct credentials!")
-
-    elif choice == "2":
-        
-        username = input("Enter your user Name: ")
-        password = input("Enter your password: ")
-        file = open('users.txt', 'r')
-        user_credentials = file.readlines()
-
-        # for user in user_credentials:
-        #     user_id, user_name, pass_word = user.split(",")
-
-        #     if user_name == username and pass_word == password:
-        #         current_user = user
-        #         menu()
-        #     else:
-        #         print("Enter correct crdentials!")
-
-        for user in user_credentials:
-            user = user.strip()
-            if user:  # Skip empty lines
-                try:
-                    user_id, user_name, pass_word = user.split(",")
-                    if user_name == username and pass_word == password:
-                        print("You are successfully logged in!")
-                        main_menu()
-                        break
-                except ValueError:
-                    print(f"Skipping invalid line in users file: {user}")
-                    continue
-        print("Enter correct credentials!")
-
-# login_user()
-        
-        
 def Account_Create():
     i= 1
     accout_holder_name = input("Enter Your Full Name: ")
@@ -236,6 +167,75 @@ def main_menu():
             break
         else:
             print("Enter valid choice!!")
+
+def login_user():
+    global admin_users, users
+    with open("admin_users.txt", 'a') as file:
+        file.write("admin,admin123\n")
+    choice = input("Enter Prefered Number to Enter \n 1. Admin\n 2. Normal User\n")
+    if choice == "1":
+        file = open('admin_users.txt', 'r')
+        admins = file.readlines()
+
+        admin_username =input("Enter Admin User Name: ")
+        admin_password = input("Enter Admin Password: ")
+
+        # for admin in admins:
+        #     admin_username =input("Enter Admin User Name: ")
+        #     admin_password = input("Enter Admin Password: ")
+        #     default_username, default_Password = admin.strip().split(",")
+        #     if default_username == admin_username and default_Password == admin_password:
+        #         print("You are sucessfully Logined!")
+        #     else:
+        #         print("Enter valid credentials!!")
+
+        for admin in admins:
+
+            main_menu = main_menu()
+            admin = admin.strip() 
+            if admin:  # Skip empty lines
+                try:
+                    user_name, pass_word = admin.split(",")
+                    if user_name == admin_username and pass_word == admin_password:
+                        print("You are successfully logged in as Admin!\n",main_menu)
+                        
+                        break
+                except ValueError:
+                    print(f"Skipping invalid line in users file: {admin}")
+                    continue
+        print("Enter correct credentials!")
+
+    elif choice == "2":
+        
+        username = input("Enter your user Name: ")
+        password = input("Enter your password: ")
+        file = open('users.txt', 'r')
+        user_credentials = file.readlines()
+
+        # for user in user_credentials:
+        #     user_id, user_name, pass_word = user.split(",")
+
+        #     if user_name == username and pass_word == password:
+        #         current_user = user
+        #         menu()
+        #     else:
+        #         print("Enter correct crdentials!")
+
+        for user in user_credentials:
+            user = user.strip()
+            if user:  # Skip empty lines
+                try:
+                    user_id, user_name, pass_word = user.split(",")
+                    if user_name == username and pass_word == password:
+                        print("You are successfully logged in!")
+                        main_menu()
+                        break
+                except ValueError:
+                    print(f"Skipping invalid line in users file: {user}")
+                    continue
+        print("Enter correct credentials!")
+
+# login_user()
         
 
             
