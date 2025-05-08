@@ -30,39 +30,53 @@ def record_deposittransaction(user_id, account_number, amount):
 #     file.close()
 
 def create_acc():
-    user_id = 1
-    i = 0
+
     global users
+    
+    try:
+        with open("users.txt", 'r') as file:
+           
+            lines = file.readlines()
+            if lines:  # If there are any lines in the file
+                # Get the last line, split by commas, and retrieve the user_id
+                last_line = lines[-1]
+                last_user_id = int(last_line.split(',')[0])  
+                user_id = last_user_id + 1  
+            else:
+                user_id = 1  # If the file is empty, start with user_id 1
+    except FileNotFoundError:
+        user_id = 1
+
     for i in range(3):
         username = input("Create a user Name: ")
-        if not username:
+        
+        if not username:  
             print("User name can't be empty!!")
-
-        # else:
-        # continue
+            continue 
+        
         password = input("Create a password: ")
-        if not password:
+        
+        if not password:  
             print("Password can't be empty!!")
-            # continue
-        elif len(password) < 6:
-            print("Password must be more than six charactors!!")
-            # continue
+            continue  
+        
+        elif len(password) < 6:  
+            print("Password must be more than six characters!!")
+            continue  
+        
         else:
             users.append([user_id, username, password])
-
+            
+            # Write the valid user to the file
             with open("users.txt", 'a') as file:
-                for user in users:
-                    # file.write(f"{user[0]},{user[1]},{user[2]}\n")
-                    last_user_id = user[0]
-                    user_id = int(last_user_id) + 1
-
                 file.write(f"{user_id},{username},{password}\n")
-            break
-        i += 1
-    # users =[username, password]
+            
+            print(f"Account created successfully for {username}")
+            user_id += 1
+            break  # Exit the loop after successful account creation
 
-    # file = open("users.txt", 'a')
-    # file.writelines()
+        
+
 
 
 # create_acc()
@@ -236,7 +250,8 @@ def login_user():
                 except ValueError:
                     print(f"Skipping invalid line in users file: {admin}")
                     continue
-        print("Enter correct credentials!")
+            else:
+                print("Enter correct credentials!")
 
     elif choice == "2":
 
@@ -244,15 +259,6 @@ def login_user():
         password = input("Enter your password: ")
         file = open('users.txt', 'r')
         user_credentials = file.readlines()
-
-        # for user in user_credentials:
-        #     user_id, user_name, pass_word = user.split(",")
-
-        #     if user_name == username and pass_word == password:
-        #         current_user = user
-        #         menu()
-        #     else:
-        #         print("Enter correct crdentials!")
 
         for user in user_credentials:
             user = user.strip()
@@ -263,13 +269,14 @@ def login_user():
                         print("You are successfully logged in!")
                         main_menu()
                         break
-                    elif user_name != username or pass_word != password:
-                        print("Enter correct credentials!")
+                    # elif user_name != username or pass_word != password:
+                    #     print("Enter correct credentials!")
                 except ValueError:
                     print(f"Skipping invalid line in users file: {user}")
                     continue
             
-                # print("Enter correct credentials!")
+            else:
+                print("Enter correct credentials!")
     elif choice == "3":
         start_menu()
         current_user = user_id
