@@ -322,9 +322,11 @@ def admin_menu():
 
 def Account_Create(user_id):
     if check_existing_account(user_id):
-        print("You already have a bank account!")
-        return
-
+        print("You already have a bank account! Do You Want Create Another Account?")
+        # choice = input("1. Yes\n 2. No\n")
+        # if choice == "2":
+        
+    
     account_holder_name = input("Enter Your Full Name: ")
     account_number = generate_account_number()
 
@@ -396,6 +398,8 @@ def withdraw_money(user_id):
                     print(f"You have successfully withdrawn {amount}")
                     print("Your Current Balance is: ", new_balance)
                     record_transaction(user_id, account_number, "withdrawal", amount)
+                    if new_balance <5000:
+                        print("Warning: Balance is below Rs.5000!")
                     break
                 else:
                     print("Insufficient funds!")
@@ -423,12 +427,29 @@ def check_balance(user_id):
     except FileNotFoundError:
         print("No accounts exist yet!")
 
-
+def display_customer_accounts(user_id):
+    with open("accounts.txt", 'r') as f:
+        for account in f:
+            parts = account.strip().split(',')
+            if parts[1] == str(user_id):
+                print(f"Account {parts[0]} : {parts[3]}\n")
+            break
+# def get_account_balance(user_id, account_number):
+#     try:
+#         with open('accounts.txt', 'r') as f:
+#             for line in f:
+#                 parts = line.strip().split(',')
+#                 if len(parts) >= 4:
+#                     if parts[0] == account_number and parts[1] == str(user_id):
+#                         return float(parts[3])
+#     except FileNotFoundError:
+#         pass
+#     return None
 def main_menu(user_id):
     while True:
         print("\nMain Menu")
         choice = input(
-            "1. Create Bank Account\n2. Check Balance\n3. Deposit Money\n4. Withdraw Money\n5. Transaction History\n6. Logout\n")
+            "1. Create Bank Account\n2. Check Balance\n3. Deposit Money\n4. Withdraw Money\n5. Transaction History\n6. Display Your Accounts\n7. Logout\n")
 
         if choice == "1":
             Account_Create(user_id)
@@ -440,7 +461,9 @@ def main_menu(user_id):
             withdraw_money(user_id)
         elif choice == "5":
             transaction_history(user_id)
-        elif choice == "6":
+        elif choice == "6": 
+            display_customer_accounts(user_id)
+        elif choice == "7":
             print("Logging out...")
             break
         else:
@@ -502,11 +525,20 @@ def login_user():
         else:
             print("Invalid choice!")
 
+def count_customers():
+    with open("customers.txt", 'r') as f:
+        print("Total Customers: ")
+        for customer in f:
+            cus_count = f.readlines()
+            print(f"{int(len(cus_count) +1)}")
+            break
+
+
 
 def start_menu():
     while True:
         print("\nWelcome to AB Bank!")
-        choice = input("1. Login\n2. Create Account\n3. Exit\n")
+        choice = input("1. Login\n2. Create Account\n3. Total Customers\n4. Exit\n")
 
         if choice == "1":
             login_user()
@@ -514,12 +546,19 @@ def start_menu():
             user_id = create_acc()
             if user_id:
                 print("Account created successfully! Please login.")
+
         elif choice == "3":
+            count_customers()
+        
+        elif choice == "4":
             print("Thank you for using our banking system. Goodbye!")
             break
         else:
             print("Please enter 1, 2, or 3!")
 
 
+
 if __name__ == "__main__":
     start_menu()
+
+
